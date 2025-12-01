@@ -6,17 +6,16 @@ const PASSWORD = "123456";
 export function middleware(req) {
   const url = new URL(req.url);
 
-  // 如果 cookie 中有 token，则允许访问
+  // 已登录（有正确 cookie）
   const cookie = req.cookies.get("token");
   if (cookie && cookie === PASSWORD) {
-    return; // 继续执行，不拦截
+    return; // 放行
   }
 
-  // 如果带了正确的 ?password=xxx，则设置 cookie
+  // 携带 password=xxxx 参数
   const inputPassword = url.searchParams.get("password");
   if (inputPassword === PASSWORD) {
     const res = Response.redirect(url.origin + url.pathname);
-    // 设置 7 天有效期
     res.headers.append(
       "Set-Cookie",
       `token=${PASSWORD}; Path=/; HttpOnly; Max-Age=${7 * 24 * 60 * 60}`
@@ -24,7 +23,7 @@ export function middleware(req) {
     return res;
   }
 
-  // 未验证，显示密码输入页
+  // 未验证，渲染密码输入页
   return new Response(
     `
       <!DOCTYPE html>
@@ -52,7 +51,9 @@ export function middleware(req) {
   );
 }
 
+// matcher：保护所有页面（包括 `/`），但排除 Next.js 内部路径
 export const config = {
-  // 要保护的路径，这里是全部路径
-  matcher: ["/:path*"]
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon\\.ico).*)'
+  ]
 };
