@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/dir-listing" }
+    { "source": "/(.*)", "destination": "/api/dir-listing?path=$1" }
   ]
 }
