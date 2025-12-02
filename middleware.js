@@ -1,7 +1,7 @@
 import { next } from '@vercel/edge';
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|package.json|package\-lock.json).*)'], // 仅保护首页，或者用 '/:path*' 保护所有页面
+  matcher: 'weekly/:path*', // 仅保护首页，或者用 '/:path*' 保护所有页面
 };
 
 export default function middleware(request) {
