@@ -20,7 +20,7 @@ export default function middleware(request) {
     }
   }
 
-  return new Response('需要密码才能访问', {
+  return new Response('Please provide a valid credentials', {
     status: 401,
     headers: {
       'WWW-Authenticate': 'Basic realm="Secure Area"',
